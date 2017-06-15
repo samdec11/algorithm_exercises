@@ -8,12 +8,20 @@ class Item
   end
 
   def ==(other)
+    return true if self.equal?(other)
     return false if other.nil? || !other.is_a?(Item)
-    name == other.name && calories == other.calories && ingredients == other.ingredients
+    name == other.name && calories == other.calories && ingredients_match(other.ingredients)
   end
 
   def eql?(other)
     self == other
+  end
+
+  private
+
+  def ingredients_match(other_ingredients)
+    ingredients.all? { |ingredient| other_ingredients.include?(ingredient) } &&
+    other_ingredients.all? { |ingredient| ingredients.include?(ingredient) }
   end
 end
 
@@ -25,7 +33,8 @@ class Ingredient
   end
 
   def ==(other)
-    name == other&.name
+    return false if other.nil? || !other.is_a?(Ingredient)
+    name == other.name
   end
 
   def eql?(other)
