@@ -19,8 +19,11 @@ class NewHash
   end
 
   def get(key)
-    bucket = find_bucket(key)
-    bucket.detect{|pair| pair.key.eql?(key) }&.value
+    find_pair_by_key(key)&.value
+  end
+
+  def contains?(key)
+    !!find_pair_by_key(key)
   end
 
   private
@@ -28,5 +31,10 @@ class NewHash
   def find_bucket(key)
     hsh = key.hash % backing.size
     backing[hsh]
+  end
+
+  def find_pair_by_key(key)
+    bucket = find_bucket(key)
+    bucket.detect{ |pair| pair.key.eql?(key) }
   end
 end

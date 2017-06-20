@@ -1,8 +1,9 @@
 require_relative "./new_hash"
 
 RSpec.describe NewHash do
+  let(:my_hash) { described_class.new }
+
   describe "#put" do
-    let(:my_hash) { described_class.new(4) }
     let(:key) { "one" }
     let(:value) { 1 }
 
@@ -35,19 +36,29 @@ RSpec.describe NewHash do
   end
 
   describe "#get" do
-    let(:my_hash) { described_class.new }
-
+    let(:key) { "red" }
+    let(:value) { "#FF0000" }
     it "returns the value of the given key if it exists in the backing" do
-      key = "red"
-      value = "#FF0000"
       put_in_hash(my_hash, key, value)
       expect(my_hash.get(key)).to eq(value)
     end
 
     it "returns nil if the key does not exist in the backing" do
-      key = "blue"
-      value = "#0000FF"
       expect(my_hash.get(key)).to be_nil
+    end
+  end
+
+  describe "#contains?" do
+    let(:key) { "green" }
+    let(:value) { "#00FF00" }
+
+    it "returns true if the given key is stored in the backing" do
+      put_in_hash(my_hash, key, value)
+      expect(my_hash.contains?(key)).to eq(true)
+    end
+
+    it "returns false if the given key is not stored in the backing" do
+      expect(my_hash.contains?(key)).to eq(false)
     end
   end
 end
