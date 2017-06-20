@@ -21,6 +21,24 @@ RSpec.describe Ingredient do
       expect(one.eql?(four)).to be false
     end
   end
+
+  describe "#hash" do
+    it "returns consistent values provided the object hasn't changed" do
+      expect(one.hash).to eq(one.hash)
+    end
+
+    it "returns a different value if the object has changed" do
+      first = one.hash
+      one.instance_variable_set("@name", "different")
+      second = one.hash
+
+      expect(first).not_to eq(second)
+    end
+
+    it "returns the same value for two equal objects" do
+      expect(one.hash).to eq (three.hash)
+    end
+  end
 end
 
 RSpec.describe Item do
@@ -80,6 +98,24 @@ RSpec.describe Item do
       not_item = NonItemClass.new("Chocolate", 200, chocolate_ingredients)
 
       expect(chocolate.eql?(not_item)).to be false
+    end
+  end
+
+  describe "#hash" do
+    it "returns consistent values provided the object hasn't changed" do
+      expect(chocolate.hash).to eq(chocolate.hash)
+    end
+
+    it "returns a different value if the object has changed" do
+      first = chocolate.hash
+      chocolate.instance_variable_set("@name", "white chocolate")
+      second = chocolate.hash
+
+      expect(first).not_to eq(second)
+    end
+
+    it "returns the same value for two equal objects" do
+      expect(chocolate.hash).to eq(more_chocolate.hash)
     end
   end
 end

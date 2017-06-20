@@ -1,7 +1,7 @@
 class Item
   attr_reader :name, :calories, :ingredients
 
-  def initialize(name, calories, ingredients)
+  def initialize(name, calories, ingredients = [])
     @name = name
     @calories = calories
     @ingredients = ingredients
@@ -17,9 +17,16 @@ class Item
     self == other
   end
 
+  def hash
+    result = name.hash
+    result = 31 * name.hash + calories
+    result = 31 * result + ingredients.hash
+    result
+  end
+
   private
 
-  def ingredients_match(other_ingredients)
+  def ingredients_match(other_ingredients) # assumes there are no duplicates
     ingredients.all? { |ingredient| other_ingredients.include?(ingredient) } &&
     other_ingredients.all? { |ingredient| ingredients.include?(ingredient) }
   end
@@ -39,5 +46,9 @@ class Ingredient
 
   def eql?(other)
     self == other
+  end
+
+  def hash
+    31 * name.hash
   end
 end
