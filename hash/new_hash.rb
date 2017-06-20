@@ -8,8 +8,7 @@ class NewHash
   end
 
   def put(key, value)
-    hsh = key.hash % backing.size
-    bucket = backing[hsh]
+    bucket = find_bucket(key)
     result = bucket.any? do |pair|
       if pair.key.eql?(key)
         pair.value = value
@@ -17,5 +16,17 @@ class NewHash
       end
     end
     bucket << Pair.new(key, value) unless result
+  end
+
+  def get(key)
+    bucket = find_bucket(key)
+    bucket.detect{|pair| pair.key.eql?(key) }&.value
+  end
+
+  private
+
+  def find_bucket(key)
+    hsh = key.hash % backing.size
+    backing[hsh]
   end
 end

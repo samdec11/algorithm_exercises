@@ -33,6 +33,23 @@ RSpec.describe NewHash do
       expect(pair_two.value).to eq(3)
     end
   end
+
+  describe "#get" do
+    let(:my_hash) { described_class.new }
+
+    it "returns the value of the given key if it exists in the backing" do
+      key = "red"
+      value = "#FF0000"
+      put_in_hash(my_hash, key, value)
+      expect(my_hash.get(key)).to eq(value)
+    end
+
+    it "returns nil if the key does not exist in the backing" do
+      key = "blue"
+      value = "#0000FF"
+      expect(my_hash.get(key)).to be_nil
+    end
+  end
 end
 
 def put_in_hash(hsh, key, value, position = nil)
